@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 360" role="img" aria-label="Plato sin foto">
+  <rect width="360" height="360" fill="#eef5f1"/>
+  <circle cx="180" cy="180" r="120" fill="#ffffff"/>
+  <circle cx="180" cy="180" r="86" fill="none" stroke="#d3e8dc" stroke-width="6"/>
+  <g fill="none" stroke="#0f9d5a" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" opacity=".85">
+    <path d="M150 140v34a14 14 0 0 0 14 14v36M178 140v34a14 14 0 0 1-14 14M164 140v34"/>
+    <path d="M214 140c-12 9-18 24-18 42 0 9 5 13 13 13h5v29"/>
+  </g>
+</svg>
