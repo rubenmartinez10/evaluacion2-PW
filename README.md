@@ -1,99 +1,179 @@
-# Evaluación II — Programación Web (Ciclo 02, 2026)
+# Evaluación II — Programación Web
 
-Monorepo con dos proyectos:
+**Ciclo 02, 2026**
 
-```
+## Integrantes
+
+| # | Nombre | Carnet |
+|---|--------|--------|
+| 1 | Astrid Adamaris Alonzo Gómez | 00091525 |
+| 2 | Ángel Gustavo Monterrosa Cisneros | 00048825 |
+| 3 | Yukio Alberto Ogawa Urquilla | 00171625 |
+| 4 | Rubén Eliseo Martínez Pérez | 00076325 |
+
+## Descripción
+
+Este repositorio contiene la solución de la **Evaluación II de Programación Web**, desarrollada como un monorepo compuesto por una API REST y una aplicación web.
+
+```text
 evaluacion2/
-├── backend/   → API REST con Node.js + Express (puerto 3000)
-└── frontend/  → Vite + React + Reactstrap (puerto 5173)
+├── backend/   → API REST
+└── frontend/  → Aplicación web
 ```
 
-## Cómo ejecutar (desde un equipo recién clonado)
+### Tecnologías
 
-Necesitas Node.js 20 o superior. Abre **dos terminales**:
+- **Backend:** Node.js, Express
+- **Frontend:** React, Vite, Reactstrap
+- **Comunicación:** API REST mediante HTTP
+
+## Instalación y ejecución
+
+Se requiere **Node.js 20 o superior**.
+
+### Backend
+
+Desde la carpeta raíz del proyecto:
 
 ```bash
-# Terminal 1 - Backend
 cd backend
 npm install
-npm run dev        # http://localhost:3000
+npm run dev
 ```
 
+El servidor estará disponible en:
+
+```text
+http://localhost:3000
+```
+
+### Frontend
+
+En una segunda terminal:
+
 ```bash
-# Terminal 2 - Frontend
 cd frontend
 npm install
-npm run dev        # http://localhost:5173
+npm run dev
 ```
 
-Opcional: el frontend usa `http://localhost:3000` por defecto. Para cambiarlo, copia
-`frontend/.env.example` a `frontend/.env` y edita `VITE_API_URL`.
+La aplicación estará disponible en:
 
-Para probar rápido el límite de tiempo de la reserva (por defecto 5 minutos):
+```text
+http://localhost:5173
+```
+
+### Configuración de la API
+
+El frontend utiliza `http://localhost:3000` como URL de la API por defecto.
+
+Para modificarla, crear el archivo `frontend/.env` a partir de `frontend/.env.example`:
 
 ```bash
-RESERVA_MINUTOS=0.5 npm run dev                    # Linux / Mac / Git Bash
-$env:RESERVA_MINUTOS=0.5; npm run dev              # PowerShell
+VITE_API_URL=http://localhost:3000
 ```
 
-## Ejercicio 1: Adivina el Número
+## Ejercicio 1 — Adivina el Número
 
-| Método | Ruta     | Body              | Respuesta                                       |
-| ------ | -------- | ----------------- | ----------------------------------------------- |
-| POST   | `/guess` | `{ "numero": 50 }` | `{ resultado: "mayor" \| "menor" \| "correcto", mensaje }` |
-| POST   | `/reset` | —                 | `{ mensaje }`                                   |
+El juego permite realizar intentos para encontrar un número oculto.
 
-`"mayor"` significa que el número **oculto** es mayor que el intento.
+### Endpoints
 
-## Ejercicio 2: Food DEI S.A. de R.L.
+| Método | Ruta | Body | Respuesta |
+|--------|------|------|-----------|
+| `POST` | `/guess` | `{ "numero": 50 }` | `{ resultado, mensaje }` |
+| `POST` | `/reset` | — | `{ mensaje }` |
 
-| # | Método | Ruta                                   | Body                               | Validaciones |
-| - | ------ | -------------------------------------- | ---------------------------------- | ------------ |
-| 1 | GET    | `/api/menu`                            | —                                  | — |
-| 2 | GET    | `/api/reserva`                         | —                                  | — |
-| 3 | POST   | `/api/reserva/agregar`                 | `{ "alimentoId": 101, "cantidad": 1 }` | 400 `Stock insuficiente` |
-| 4 | PUT    | `/api/reserva/actualizar-porciones/:id` | `{ "cantidad": 3 }`               | 400 `Saldo insuficiente para esta cantidad` |
-| 5 | DELETE | `/api/reserva/eliminar/:id`            | —                                  | Devuelve las unidades al stock |
-| + | POST   | `/api/reserva/iniciar`                 | —                                  | Inicia el temporizador (también se inicia solo al agregar el primer plato) |
-| + | POST   | `/api/reserva/confirmar`               | —                                  | Cobra el total y bloquea el stock |
+El campo `resultado` puede tomar los siguientes valores:
+
+- `mayor`: el número oculto es mayor que el intento.
+- `menor`: el número oculto es menor que el intento.
+- `correcto`: el número ingresado coincide con el número oculto.
+
+## Ejercicio 2 — Food DEI S.A. de R.L.
+
+Este ejercicio implementa un sistema de menú y reservas de alimentos, incluyendo control de inventario, saldo disponible y tiempo límite para confirmar una reserva.
+
+### Endpoints
+
+| # | Método | Ruta | Body | Descripción |
+|---|--------|------|------|-------------|
+| 1 | `GET` | `/api/menu` | — | Obtiene el menú disponible. |
+| 2 | `GET` | `/api/reserva` | — | Obtiene el estado actual de la reserva. |
+| 3 | `POST` | `/api/reserva/agregar` | `{ "alimentoId": 101, "cantidad": 1 }` | Agrega un alimento a la reserva. |
+| 4 | `PUT` | `/api/reserva/actualizar-porciones/:id` | `{ "cantidad": 3 }` | Actualiza la cantidad de un alimento. |
+| 5 | `DELETE` | `/api/reserva/eliminar/:id` | — | Elimina un alimento de la reserva. |
+| 6 | `POST` | `/api/reserva/iniciar` | — | Inicia el temporizador de la reserva. |
+| 7 | `POST` | `/api/reserva/confirmar` | — | Confirma la reserva y realiza el cobro. |
 
 ### Reglas de negocio
 
-- Al **agregar** un plato, el stock se descuenta del menú (queda apartado para el usuario).
-- Al **quitar** un plato o bajar porciones, las unidades regresan al stock.
-- El total nunca puede superar el saldo (`saldoDisponible = saldo - total`).
-- La reserva dura un tiempo límite. Si vence sin confirmarse, el backend la cancela,
-  devuelve el stock y el frontend invita a iniciar una nueva.
-- Al **confirmar**, se descuenta el total del saldo y el stock queda bloqueado definitivamente.
-- Los datos viven en memoria: al reiniciar el backend todo vuelve al estado inicial.
+- Al agregar un alimento, las unidades correspondientes se descuentan del stock disponible.
+- Al eliminar un alimento o reducir su cantidad, las unidades regresan al stock.
+- El total de la reserva no puede superar el saldo disponible.
+- La reserva cuenta con un tiempo límite para ser confirmada.
+- Si el tiempo expira, la reserva se cancela y el stock reservado vuelve a estar disponible.
+- Al confirmar la reserva, se descuenta el total del saldo y el stock queda reservado definitivamente.
+- Los datos se almacenan en memoria, por lo que se restablecen al reiniciar el backend.
 
-## Estructura
+### Tiempo de reserva
 
+El tiempo límite puede configurarse mediante la variable de entorno `RESERVA_MINUTOS`.
+
+Por ejemplo, para utilizar un límite de 30 segundos:
+
+**Linux / macOS / Git Bash:**
+
+```bash
+RESERVA_MINUTOS=0.5 npm run dev
 ```
-backend/src/
-├── index.js                      # Configura Express, CORS, JSON y monta las rutas
-├── data/menu.js                  # Inventario (arreglo de objetos)
-├── routes/                       # Define URL + método HTTP → controlador
-│   ├── juego.routes.js
-│   ├── menu.routes.js
-│   └── reserva.routes.js
-└── controllers/                  # Lógica de negocio
-    ├── juego.controller.js
-    └── reserva.controller.js
 
-frontend/src/
-├── main.jsx                      # Punto de entrada, importa Bootstrap
-├── App.jsx                       # Pestañas para cambiar de ejercicio
-├── api/                          # Comunicación con el backend (fetch + promesas)
-│   ├── client.js
-│   ├── juegoApi.js
-│   └── reservaApi.js
-└── components/
-    ├── juego/AdivinaNumero.jsx
-    └── reserva/
-        ├── ReservaFoodDei.jsx    # Estado principal (useState/useEffect) y manejo de errores
-        ├── PanelUsuario.jsx      # Saldo, total, temporizador, confirmar
-        ├── Temporizador.jsx      # Cuenta regresiva con setInterval
-        ├── MenuDelDia.jsx        # Cuadrícula de Cards (Endpoints 1 y 3)
-        └── BandejaReserva.jsx    # ListGroup con +/- y Quitar (Endpoints 2, 4 y 5)
+**PowerShell:**
+
+```powershell
+$env:RESERVA_MINUTOS=0.5; npm run dev
+```
+
+## Estructura del proyecto
+
+```text
+backend/
+└── src/
+    ├── index.js
+    ├── data/
+    │   └── menu.js
+    ├── routes/
+    │   ├── juego.routes.js
+    │   ├── menu.routes.js
+    │   └── reserva.routes.js
+    └── controllers/
+        ├── juego.controller.js
+        └── reserva.controller.js
+
+frontend/
+└── src/
+    ├── main.jsx
+    ├── App.jsx
+    ├── api/
+    │   ├── client.js
+    │   ├── juegoApi.js
+    │   └── reservaApi.js
+    └── components/
+        ├── juego/
+        │   └── AdivinaNumero.jsx
+        └── reserva/
+            ├── ReservaFoodDei.jsx
+            ├── PanelUsuario.jsx
+            ├── Temporizador.jsx
+            ├── MenuDelDia.jsx
+            └── BandejaReserva.jsx
+```
+
+## Ejecución
+
+Para utilizar el proyecto es necesario ejecutar simultáneamente el **backend** y el **frontend** en terminales independientes.
+
+```text
+Backend   → http://localhost:3000
+Frontend  → http://localhost:5173
 ```
