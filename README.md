@@ -27,6 +27,42 @@ evaluacion2/
 - **Frontend:** React, Vite, Reactstrap
 - **Comunicación:** API REST mediante HTTP
 
+## Capturas de la aplicación
+
+### Ejercicio 1 — Adivina el Número
+
+Pantalla principal del juego:
+
+<p align="center">
+  <img src="docs/images/adivina-numero.png" alt="Juego Adivina el Número" width="700">
+</p>
+
+Resultado de un intento:
+
+<p align="center">
+  <img src="docs/images/adivina-numero-resultado.png" alt="Resultado de un intento en Adivina el Número" width="700">
+</p>
+
+### Ejercicio 2 — Food DEI S.A. de R.L.
+
+Menú disponible:
+
+<p align="center">
+  <img src="docs/images/food-dei-menu.png" alt="Menú de Food DEI" width="700">
+</p>
+
+Reserva con alimentos seleccionados:
+
+<p align="center">
+  <img src="docs/images/food-dei-reserva.png" alt="Reserva de Food DEI" width="700">
+</p>
+
+Reserva confirmada:
+
+<p align="center">
+  <img src="docs/images/food-dei-confirmada.png" alt="Reserva de Food DEI confirmada" width="700">
+</p>
+
 ## Instalación y ejecución
 
 Se requiere **Node.js 20 o superior**.
