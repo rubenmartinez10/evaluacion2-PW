@@ -213,3 +213,9 @@ Para utilizar el proyecto es necesario ejecutar simultáneamente el **backend** 
 Backend   → http://localhost:3000
 Frontend  → http://localhost:5173
 ```
+
+En este proyecto se implementó el uso de Inteligencia Artificial para el desarrollo de la lógica y mejora de la interfaz, así como la IA integrada en Visual Studio Code de completación automática.
+
+Modelos Usados: 
+- Claude code Opus 5.5
+- GitHub Copilot
